@@ -1,9 +1,12 @@
+import SignupForm from "../features/authentication/SignupForm";
+import Heading from "../ui/Heading";
 
 
 export default function Registration() {
   return (
-    <div>
-      
-    </div>
+    <>
+     <Heading as="h1">新規登録フォーム</Heading> 
+     <SignupForm />
+    </>
   )
 }

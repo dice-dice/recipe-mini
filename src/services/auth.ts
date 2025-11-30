@@ -2,19 +2,27 @@ import { supabase } from "./supabase";
 
 // サインアップ
 export async function signup({
+  fullName,
   email,
   password,
 }: {
+  fullName: string;
   email: string;
   password: string;
 }) {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
+    options: {
+      data: {
+        fullName,
+      },
+    },
   });
 
   if (error) throw error;
-  return data;
+  console.log(data);
+//   return data;
 }
 
 // ログイン
