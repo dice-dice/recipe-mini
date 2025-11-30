@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import PageNotFound from "./pages/PageNotFound";
 import AddRecipe from "./pages/AddRecipe";
 import Settings from "./pages/Settings";
+import ProtectedRoute from "./utlils/ProtectedRoute";
 
 export default function App() {
   return (
@@ -24,12 +25,20 @@ export default function App() {
           <Route path="login" element={<Login />} />
           <Route path="overview" element={<Overview />} />
           <Route path="*" element={<PageNotFound />} />
-          <Route path="app" element={<AppLayout />}>
+          <Route
+            path="app"
+            element={
+              <ProtectedRoute>
+                <AppLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route path="recipes" element={<Recipes />}>
               <Route path=":id" element={<RecipeDetail />} />
             </Route>
             <Route path="add" element={<AddRecipe />} />
           </Route>
+
           <Route path="settings" element={<Settings />} />
         </Routes>
       </BrowserRouter>
