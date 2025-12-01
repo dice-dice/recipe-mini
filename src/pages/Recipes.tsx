@@ -1,7 +1,7 @@
 export default function Recipes() {
   return (
-    <div>
-      
-    </div>
+    <p>
+      recipesの画面
+    </p>
   )
 }

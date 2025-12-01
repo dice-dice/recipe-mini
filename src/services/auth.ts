@@ -47,3 +47,14 @@ export async function logout() {
   const { error } = await supabase.auth.signOut();
   if (error) throw error;
 }
+
+// ログイン中
+export async function getCurrentUser() {
+  const { data: { session } } = await supabase.auth.getSession();
+
+  if (!session) return null;
+
+  return session.user;
+}
+
+

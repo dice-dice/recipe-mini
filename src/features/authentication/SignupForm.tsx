@@ -2,12 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { signup as signupApi } from "../../services/auth";
 
-type FormValues = {
-  fullName: string;
-  email: string;
-  password: string;
-  passwordConfirm: string;
-};
+import { SignupFormValues } from "../../types/authType"; 
 
 export default function SignupForm() {
   const {
@@ -16,7 +11,7 @@ export default function SignupForm() {
     getValues,
     handleSubmit,
     reset,
-  } = useForm<FormValues>();
+  } = useForm<SignupFormValues>();
 
   const { mutate: signup, isLoading } = useMutation({
     mutationFn: signupApi,

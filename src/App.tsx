@@ -34,9 +34,9 @@ export default function App() {
             <Route index element={<Navigate replace to="/" />} />
             <Route path="/" element={<HomePage />} />
             <Route path="registration" element={<Registration />} />
-            <Route path="login" element={<Login />} />
+
             <Route path="overview" element={<Overview />} />
-            <Route path="*" element={<PageNotFound />} />
+
             <Route
               path="app"
               element={
@@ -45,13 +45,14 @@ export default function App() {
                 </ProtectedRoute>
               }
             >
-              <Route path="recipes" element={<Recipes />}>
-                <Route path=":id" element={<RecipeDetail />} />
-              </Route>
+              <Route index element={<Navigate to="recipes" replace />} />
+              <Route path="recipes" element={<Recipes />} />
+              <Route path="recipes/:id" element={<RecipeDetail />} />
               <Route path="add" element={<AddRecipe />} />
             </Route>
-
+            <Route path="login" element={<Login />} />
             <Route path="settings" element={<Settings />} />
+            <Route path="*" element={<PageNotFound />} />
           </Routes>
         </BrowserRouter>
       </QueryClientProvider>
