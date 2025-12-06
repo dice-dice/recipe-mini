@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
+import Logout from "../pages/Logout";
 
 const StyleSidebar = styled.aside`
   background-color: var(--color-grey-0);
@@ -34,6 +35,7 @@ export default function Sidebar() {
     <StyleSidebar >
       <StyledNavLink to={"/app/recipes"}>recipes</StyledNavLink>
       <StyledNavLink to={"/app/add"}>recipe追加</StyledNavLink>
+      <Logout />
     </StyleSidebar>
   )
 }
