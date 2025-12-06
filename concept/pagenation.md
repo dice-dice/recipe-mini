@@ -6,7 +6,7 @@
 ## ログイン
 - ログインページ /login
 - レシピ一覧ページ　app/recipes
-- レシピ詳細ページ app/recipes/:recipeId
+- レシピ詳細ページ app/recipes/:id
 - レシピ追加ページ app/recipies/add
   
 ## choose library
