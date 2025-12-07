@@ -22,12 +22,12 @@ export default function LoginForm() {
     register,
     formState: { errors },
     handleSubmit,
-    getValues,
-    reset,
+    reset
   } = useForm<LoginFormValues>();
 
   function onSubmit({ email, password }: LoginFormValues) {
     login({ email, password });
+    reset({ email: "",password: ""});
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
