@@ -1,12 +1,19 @@
 import styled from "styled-components";
 import type { Recipe } from "../../types/recipe";
+import { NavLink } from "react-router-dom";
 
-const Row = styled.li`
+const Row = styled(NavLink)`
   display: flex;
   align-items: center;
   gap: 2rem;
   padding: 1.6rem 1rem;
   border-bottom: 1px solid var(--color-grey-200);
+    text-decoration: none;
+  color: inherit;
+
+  &:hover {
+    background-color: var(--color-grey-50);
+  }
 `;
 
 const Thumbnail = styled.img`
@@ -34,9 +41,11 @@ const Category = styled.span`
   color: var(--color-grey-600);
 `;
 
+
+
 export default function RecipeRow({ recipe }: { recipe: Recipe }) {
   return (
-    <Row>
+    <Row to={`/app/recipes/${recipe.id}`}>
       <Thumbnail
         src={recipe.image_url ?? "/placeholder.png"}
         alt={recipe.title ?? "recipe image"}
