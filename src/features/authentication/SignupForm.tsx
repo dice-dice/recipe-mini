@@ -38,16 +38,19 @@ export default function SignupForm() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <input
           type="text"
+          disabled={isLoading}
           {...register("fullName", { required: "This field is required" })}
         />
         {errors?.fullName?.message}
         <input
           type="email"
+           disabled={isLoading}
           {...register("email", { required: "This field is required" })}
         />
         {errors?.email?.message}
         <input
           type="password"
+           disabled={isLoading}
           {...register("password", {
             required: "This field is required",
             minLength: {
@@ -60,6 +63,7 @@ export default function SignupForm() {
 
         <input
           type="password"
+           disabled={isLoading}
           {...register("passwordConfirm", {
             required: "This field is required",
             // validate: (value) => value === getValues().password || "Passwords need to match",
