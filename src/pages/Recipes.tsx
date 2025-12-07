@@ -2,21 +2,16 @@ import { useQuery } from "@tanstack/react-query";
 import { getAllRecipes } from "../services/recipe";
 import RecipeRow from "../features/recipes/RecipeRow";
 import { Recipe } from "../types/recipe";
-import { useEffect } from "react";
-import { supabase } from "../services/supabase";
+import Spinner from "../ui/Spinner";
 
 export default function Recipes() {
-  useEffect(() => {
-  supabase.auth.getUser().then((res) => {
-    console.log("ログイン中のユーザーID:", res.data.user?.id);
-  });
-}, []);
-
   const {
     isLoading,
     data: recipes,
     error,
   } = useQuery<Recipe[]>({ queryKey: ["recipes"], queryFn: getAllRecipes });
+  if(isLoading) return <Spinner/>
+  if (error) return <p>データの取得に失敗しました。</p>;
   return (
     <ul>
       {recipes?.map((recipe: Recipe) => (
