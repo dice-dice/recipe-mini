@@ -5,7 +5,6 @@ export async function getAllRecipes(): Promise<Recipe[]> {
   const { data, error } = await supabase.from("recipes").select("*");
 
   if (error) throw error;
-console.log(data, error);
   return data as Recipe[];
 }
 
@@ -23,4 +22,15 @@ export async function addRecipe(newRecipe: Omit<Recipe, "id" | "created_at" | "u
   .select().single();
 if(error) throw new Error(error.message);
 return data as Recipe;
+}
+
+export async function getRecipeById(id: string) {
+  const { data, error } = await supabase
+    .from("recipes")
+    .select("*")
+    .eq("id", id)
+    .single(); 
+
+  if (error) throw error;
+  return data;
 }
