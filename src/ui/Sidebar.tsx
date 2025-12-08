@@ -35,7 +35,7 @@ export default function Sidebar() {
     <StyleSidebar >
       <StyledNavLink to={"/app/recipes"}>recipes</StyledNavLink>
       <StyledNavLink to={"/app/add"}>recipe追加</StyledNavLink>
-      <Logout />
+      <Logout button_comment={"logout"}/>
     </StyleSidebar>
   )
 }
