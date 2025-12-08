@@ -1,5 +1,5 @@
 import { supabase } from "./supabase";
-import { Recipe } from "../types/recipe";
+import { Recipe, RecipeForm } from "../types/recipe";
 
 export async function getAllRecipes(): Promise<Recipe[]> {
   const { data, error } = await supabase.from("recipes").select("*");
@@ -24,7 +24,7 @@ if(error) throw new Error(error.message);
 return data as Recipe;
 }
 
-export async function getRecipeById(id: string) {
+export async function getRecipeById(id: number) {
   const { data, error } = await supabase
     .from("recipes")
     .select("*")
@@ -32,5 +32,21 @@ export async function getRecipeById(id: string) {
     .single(); 
 
   if (error) throw error;
+  return data;
+}
+
+
+export async function updateRecipe(
+  id: number,
+  newRecipe: RecipeForm
+) {
+  const { data, error } = await supabase
+    .from("recipes")
+    .update(newRecipe)
+    .eq("id", id)
+    .select(); 
+
+  if (error) throw error;
+
   return data;
 }
