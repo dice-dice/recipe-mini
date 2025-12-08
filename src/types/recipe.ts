@@ -11,7 +11,8 @@ export type Recipe = {
   category: string | null;
 };
 
-export type AddRecipeForm = Omit<
+export type RecipeForm = Omit<
   Recipe,
   "id" | "created_at" | "user_id"
 >;
+
