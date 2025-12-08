@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { addRecipe as addRecipeApi } from "../../services/recipe";
 import { useForm } from "react-hook-form";
-import { AddRecipeForm } from "../../types/recipe";
+import { RecipeForm } from "../../types/recipe";
 
 export default function CreateRecipeForm() {
-  const{register, handleSubmit, reset, formState:{ errors }} = useForm<AddRecipeForm>();
+  const{register, handleSubmit, reset, formState:{ errors }} = useForm<RecipeForm>();
     
     const queryClient = useQueryClient();
     const {mutate: addRecipe, isLoading } = useMutation({
@@ -15,7 +15,7 @@ export default function CreateRecipeForm() {
           reset()
         }
     });
-    function onSubmit(data: AddRecipeForm){
+    function onSubmit(data: RecipeForm){
       addRecipe(data)
     }
   return (
