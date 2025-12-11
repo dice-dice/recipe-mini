@@ -14,5 +14,7 @@ export type Recipe = {
 export type RecipeForm = Omit<
   Recipe,
   "id" | "created_at" | "user_id"
->;
+> & {
+  image_file?: FileList;
+};
 
