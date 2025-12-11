@@ -35,6 +35,7 @@ export default function EditRecipeForm({
   });
 
   function onSubmit(value: RecipeForm) {
+    
     updateMutate({ id: recipe.id, value });
   }
   return (
@@ -71,8 +72,15 @@ export default function EditRecipeForm({
 
       <input
         disabled={isLoading}
+        type="hidden"
         {...register("image_url")}
         placeholder="画像URL"
+      />
+      <input
+        type="file"
+        accept="image/*"
+        {...register("image_file")}
+        disabled={isLoading}
       />
 
       <input

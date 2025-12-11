@@ -1,5 +1,6 @@
 import { supabase } from "./supabase";
 import { Recipe, RecipeForm } from "../types/recipe";
+  import { v4 as uuid } from "uuid";
 
 export async function getAllRecipes(): Promise<Recipe[]> {
   const { data, error } = await supabase.from("recipes").select("*");
@@ -8,20 +9,24 @@ export async function getAllRecipes(): Promise<Recipe[]> {
   return data as Recipe[];
 }
 
-export async function addRecipe(newRecipe: Omit<Recipe, "id" | "created_at" | "user_id">):Promise<Recipe> {
-    const {data: {user}, error: userError} = await supabase.auth.getUser();
-    
-    if(userError) throw new Error(userError.message);
-    if(!user) throw new Error("ログインユーザーが取得できませんでした");
+export async function addRecipe(
+  newRecipe: Omit<Recipe, "id" | "created_at" | "user_id">
+): Promise<Recipe> {
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
 
-    const { data, error } = await supabase
-  .from('recipes')
-  .insert([
-    { ...newRecipe, user_id: user.id, },
-  ])
-  .select().single();
-if(error) throw new Error(error.message);
-return data as Recipe;
+  if (userError) throw new Error(userError.message);
+  if (!user) throw new Error("ログインユーザーが取得できませんでした");
+
+  const { data, error } = await supabase
+    .from("recipes")
+    .insert([{ ...newRecipe, user_id: user.id }])
+    .select()
+    .single();
+  if (error) throw new Error(error.message);
+  return data as Recipe;
 }
 
 export async function getRecipeById(id: number) {
@@ -29,27 +34,60 @@ export async function getRecipeById(id: number) {
     .from("recipes")
     .select("*")
     .eq("id", id)
-    .single(); 
+    .single();
 
   if (error) throw error;
   return data;
 }
 
+export async function imageUpload(file: File, id: number) {
 
-export async function updateRecipe(
-  id: number,
-  newRecipe: RecipeForm
-) {
+    const ext = file.name.split(".").pop();
+    const filePath = `recipes/${id}/${uuid()}.${ext}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("recipe_img")
+      .upload(filePath, file, { upsert: true });
+
+    if (uploadError) throw uploadError;
+
+    const { data: urlData } = supabase.storage
+      .from("recipe_img")
+      .getPublicUrl(filePath);
+
+    return urlData.publicUrl;
+  }
+
+export async function updateRecipe(id: number, newRecipe: RecipeForm) {
+  let imageUrl = newRecipe.image_url;
+
+
+    if (newRecipe.image_file && newRecipe.image_file[0]) {
+    const file = newRecipe.image_file[0];
+    imageUrl=  await imageUpload(file, id);
+
+    }
+    
   const { data, error } = await supabase
     .from("recipes")
-    .update(newRecipe)
+    .update({
+      title: newRecipe.title,
+      ingredients: newRecipe.ingredients,
+      step1: newRecipe.step1,
+      step2: newRecipe.step2,
+      step3: newRecipe.step3,
+      category: newRecipe.category,
+      image_url: imageUrl, 
+    })
     .eq("id", id)
-    .select(); 
+    .select()
+    .single();
 
   if (error) throw error;
 
   return data;
 }
+
 
 export async function deleteRecipe(id: number) {
   const { error } = await supabase.from("recipes").delete().eq("id", id);
