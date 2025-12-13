@@ -1,6 +1,6 @@
 import { supabase } from "./supabase";
 import { Recipe, RecipeForm } from "../types/recipe";
-  import { v4 as uuid } from "uuid";
+import { v4 as uuid } from "uuid";
 
 export async function getAllRecipes(): Promise<Recipe[]> {
   const { data, error } = await supabase.from("recipes").select("*");
@@ -41,33 +41,30 @@ export async function getRecipeById(id: number) {
 }
 
 export async function imageUpload(file: File, id: number) {
+  const ext = file.name.split(".").pop();
+  const filePath = `recipes/${id}/${uuid()}.${ext}`;
 
-    const ext = file.name.split(".").pop();
-    const filePath = `recipes/${id}/${uuid()}.${ext}`;
+  const { error: uploadError } = await supabase.storage
+    .from("recipe_img")
+    .upload(filePath, file, { upsert: true });
 
-    const { error: uploadError } = await supabase.storage
-      .from("recipe_img")
-      .upload(filePath, file, { upsert: true });
+  if (uploadError) throw uploadError;
 
-    if (uploadError) throw uploadError;
+  const { data: urlData } = supabase.storage
+    .from("recipe_img")
+    .getPublicUrl(filePath);
 
-    const { data: urlData } = supabase.storage
-      .from("recipe_img")
-      .getPublicUrl(filePath);
-
-    return urlData.publicUrl;
-  }
+  return urlData.publicUrl;
+}
 
 export async function updateRecipe(id: number, newRecipe: RecipeForm) {
   let imageUrl = newRecipe.image_url;
 
-
-    if (newRecipe.image_file && newRecipe.image_file[0]) {
+  if (newRecipe.image_file && newRecipe.image_file[0]) {
     const file = newRecipe.image_file[0];
-    imageUrl=  await imageUpload(file, id);
+    imageUrl = await imageUpload(file, id);
+  }
 
-    }
-    
   const { data, error } = await supabase
     .from("recipes")
     .update({
@@ -77,7 +74,7 @@ export async function updateRecipe(id: number, newRecipe: RecipeForm) {
       step2: newRecipe.step2,
       step3: newRecipe.step3,
       category: newRecipe.category,
-      image_url: imageUrl, 
+      image_url: imageUrl,
     })
     .eq("id", id)
     .select()
@@ -87,7 +84,6 @@ export async function updateRecipe(id: number, newRecipe: RecipeForm) {
 
   return data;
 }
-
 
 export async function deleteRecipe(id: number) {
   const { error } = await supabase.from("recipes").delete().eq("id", id);
