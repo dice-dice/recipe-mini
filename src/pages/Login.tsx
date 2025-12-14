@@ -13,9 +13,10 @@ const LoginLayout = styled.main`
 `
 
 export default function Login() {
+  
   return (
     <LoginLayout>
-      <LoginForm />
+      <LoginForm buttonName="ログイン" />
     </LoginLayout>
   )
 }
