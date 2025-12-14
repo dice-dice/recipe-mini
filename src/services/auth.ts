@@ -22,7 +22,7 @@ export async function signup({
 
   if (error) throw error;
   console.log(data);
-//   return data;
+  //   return data;
 }
 
 // ログイン
@@ -50,11 +50,26 @@ export async function logout() {
 
 // ログイン中
 export async function getCurrentUser() {
-  const { data: { session } } = await supabase.auth.getSession();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
   if (!session) return null;
 
   return session.user;
 }
 
+//パスワード再セット
+export async function resetPassword({
+  new_password,
+}: {
+  new_password: string;
+}) {
+  const { data, error } = await supabase.auth.updateUser({
+    password: new_password,
+  });
+  if (error) throw error;
+
+  return data;
+}
 
