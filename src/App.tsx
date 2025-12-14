@@ -15,6 +15,8 @@ import AddRecipe from "./pages/AddRecipe";
 import Settings from "./pages/Settings";
 
 import ProtectedRoute from "./utils/ProtectedRoute";
+import Profile from "./features/authentication/Profile";
+import PasswordSet from "./features/authentication/PasswordSet";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -49,6 +51,8 @@ export default function App() {
               <Route path="recipes" element={<Recipes />} />
               <Route path="recipes/:id" element={<RecipeDetail />} />
               <Route path="add" element={<AddRecipe />} />
+              <Route path="profile" element={<Profile/>} />
+              <Route path="password" element={<PasswordSet/>} />
             </Route>
             <Route path="login" element={<Login />} />
             <Route path="settings" element={<Settings />} />
