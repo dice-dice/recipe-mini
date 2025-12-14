@@ -9,3 +9,8 @@ export type LoginFormValues = {
   email: string;
   password: string;
 };
+
+export type ResetPasswordFormValues = {
+  new_password: string;
+  new_passwordConfirm: string;
+};
