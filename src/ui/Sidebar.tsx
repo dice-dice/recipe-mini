@@ -1,7 +1,6 @@
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import Logout from "../pages/Logout";
-import Profile from "../features/authentication/Profile";
 
 const StyleSidebar = styled.aside`
   background-color: var(--color-grey-0);
