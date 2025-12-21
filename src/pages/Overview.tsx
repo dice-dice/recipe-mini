@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Button from "../ui/Button";
 const HeroVisual = styled.section`
     border-radius: var(--border-radius-lg);
     padding: 2.4rem;
