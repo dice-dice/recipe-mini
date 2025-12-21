@@ -3,6 +3,7 @@ import { Outlet } from 'react-router';
 import styled from 'styled-components';
 import Header from './Header';
 import Sidebar from './Sidebar';
+import { useEffect, useState } from 'react';
 
 const StyledAppLayout = styled.div`
   display: grid;
@@ -25,9 +26,25 @@ const Container = styled.div`
   gap: 3.2rem;
 `;
 export default function AppLayout() {
+  const [theme, setTheme] = useState(
+    localStorage.getItem("theme") || "light"
+  );
+  
+  useEffect(function() {
+const root = document.documentElement;
+    root.classList.toggle("dark-mode", theme === "dark");
+  },[theme]);
+
+  function toggleTheme() {
+    setTheme((priv) => {
+      const newTheme = priv === "light" ? "dark" : "light";
+      localStorage.setItem("theme", newTheme);
+      return newTheme;
+    });
+  }
   return (
     <StyledAppLayout>
-      <Header />
+      <Header theme={theme} toggleTheme ={toggleTheme}/>
       <Sidebar/>
       <Main>
         <Container>
