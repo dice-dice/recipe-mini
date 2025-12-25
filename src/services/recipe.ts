@@ -10,7 +10,7 @@ export async function getAllRecipes(): Promise<Recipe[]> {
 }
 
 export async function addRecipe(
-  newRecipe: Omit<Recipe, "id" | "created_at" | "user_id">
+  newRecipe: RecipeForm
 ): Promise<Recipe> {
   const {
     data: { user },
@@ -20,14 +20,41 @@ export async function addRecipe(
   if (userError) throw new Error(userError.message);
   if (!user) throw new Error("ログインユーザーが取得できませんでした");
 
-  const { data, error } = await supabase
+  const { data: createRecipe, error: insertError } = await supabase
     .from("recipes")
-    .insert([{ ...newRecipe, user_id: user.id }])
+    .insert([
+      {
+        title: newRecipe.title,
+        ingredients: newRecipe.ingredients,
+        step1: newRecipe.step1,
+        step2: newRecipe.step2,
+        step3: newRecipe.step3,
+        category: newRecipe.category,
+        user_id: user.id,
+        image_url: null,
+      },
+    ])
     .select()
     .single();
-  if (error) throw new Error(error.message);
-  return data as Recipe;
+
+    if(insertError) throw insertError;
+
+let image_url: string | null = null;
+
+if(newRecipe.image_file && newRecipe.image_file[0]) {
+  image_url = await imageUpload(newRecipe.image_file[0], createRecipe.id);
+  const {data: updateRecipe, error: updateError } = 
+  await supabase.from("recipes").update({image_url: image_url})
+  .eq("id", createRecipe.id)
+  .select()
+  .single();
+  
+    if (updateError) throw updateError;
+    return updateRecipe as Recipe;
 }
+return createRecipe as Recipe;
+}
+
 
 export async function getRecipeById(id: number) {
   const { data, error } = await supabase
