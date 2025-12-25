@@ -18,3 +18,7 @@ export type RecipeForm = Omit<
   image_file?: FileList;
 };
 
+export interface FormProps {
+  $type?: "modal" | "default";
+}
+
