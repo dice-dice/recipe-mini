@@ -102,7 +102,7 @@ export default function RecipeFormFields({
         {isLoading ? "送信中" : submitLabel}
       </Button>
       {onCancel && (
-        <Button type="button" onClick={onCancel}>
+        <Button type="button" onClick={onCancel} disabled={isLoading}>
           キャンセル
         </Button>
       )}
