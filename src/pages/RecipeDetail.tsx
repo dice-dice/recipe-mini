@@ -1,41 +1,21 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNavigate, useParams } from "react-router-dom";
-import { deleteRecipe, getRecipeById } from "../services/recipe";
-import { Recipe } from "../types/recipe";
 import Spinner from "../ui/Spinner";
 import Button from "../ui/Button";
 import { useState } from "react";
 import EditRecipeForm from "../features/recipes/EditRecipeForm";
 import ConfirmPopUp from "../ui/ConfirmPopUp";
+import useGetRecipe from "../features/recipes/useGetRecipe";
+import useDeleteRecipe from "../features/recipes/useDeleteRecipe";
 
 export default function RecipeDetail() {
-  const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
-  const { id } = useParams();
   const [isEditing, setEditing] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
+  
+  const {isLoading, data: recipe, error, numericId} = useGetRecipe();
+  const {mutate: deleteById} = useDeleteRecipe(numericId);
 
-  const numericId = Number(id);
-  const {
-    isLoading,
-    data: recipe,
-    error,
-  } = useQuery<Recipe>({
-    queryKey: ["recipe", numericId],
-    queryFn: () => getRecipeById(numericId!),
-    enabled: !!numericId,
-  });
-
-  const { mutate: deleteByid } = useMutation({
-    mutationFn: () => deleteRecipe(numericId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["recipe"] });
-      navigate("/app/recipes");
-    },
-  });
   function handleDelete() {
-    deleteByid();
+    deleteById();
   }
   if (isLoading) return <Spinner />;
   if (error) return <p>データの取得に失敗しました。</p>;
