@@ -10,11 +10,10 @@
 - レシピ追加ページ app/recipies/add
   
 ## choose library
-- react-hook-form@7 
+- react-hook-form@7.69
 - react-router-dom@6
 - styled-components
 - hot-Toaster
-- react-icons
 
 ## what create project
 - vite@4
