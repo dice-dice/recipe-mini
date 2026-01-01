@@ -26,9 +26,8 @@ export async function addRecipe(
       {
         title: newRecipe.title,
         ingredients: newRecipe.ingredients,
-        step1: newRecipe.step1,
-        step2: newRecipe.step2,
-        step3: newRecipe.step3,
+        ingredient_groups: newRecipe.ingredient_groups,
+        steps: newRecipe.steps.map(step => step.value),
         category: newRecipe.category,
         user_id: user.id,
         image_url: null,
@@ -97,9 +96,8 @@ export async function updateRecipe(id: number, newRecipe: RecipeForm) {
     .update({
       title: newRecipe.title,
       ingredients: newRecipe.ingredients,
-      step1: newRecipe.step1,
-      step2: newRecipe.step2,
-      step3: newRecipe.step3,
+      ingredient_groups: newRecipe.ingredient_groups,
+      steps: newRecipe.steps.map(step => step.value),
       category: newRecipe.category,
       image_url: imageUrl,
     })
