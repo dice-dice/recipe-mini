@@ -1,10 +1,19 @@
-import { useFormContext } from "react-hook-form";
+import { useFieldArray, useFormContext } from "react-hook-form";
+import styled from "styled-components";
 import { RecipeForm } from "../../types/recipe";
 import Label from "../../ui/Label";
 import Input from "../../ui/Input";
 import FormError from "../../ui/FormError";
 import Textarea from "../../ui/Textarea";
 import Button from "../../ui/Button";
+import { IngredientGroupFields } from "./IngredientGroupFields";
+import IngredientFields from "./IngredientFields";
+
+const IngredientSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+`;
 
 type Props = {
   title: string;
@@ -20,9 +29,38 @@ export default function RecipeFormFields({
   onCancel,
 }: Props) {
   const {
+    control,
     register,
     formState: { errors },
   } = useFormContext<RecipeForm>();
+
+  const {
+    fields: normalFields,
+    append: appendNormal,
+    remove: removenNormal,
+  } = useFieldArray({
+    control,
+    name: "ingredients",
+  });
+
+  const {
+    fields: groupFields,
+    append: appendGroup,
+    remove: removeGroup,
+  } = useFieldArray({
+    control,
+    name: "ingredient_groups",
+  });
+
+  const {
+    fields: stepFields,
+    append: appendStep,
+    remove: removeStep,
+  } = useFieldArray({
+    control,
+    name: "steps",
+  });
+
   return (
     <>
       <h3>{title}</h3>
@@ -33,60 +71,106 @@ export default function RecipeFormFields({
         {...register("title", { required: "This field is required" })}
         placeholder="タイトル"
       />
-      {errors?.title?.message && (
-        <FormError>{errors?.title?.message}</FormError>
-      )}
-      <Label htmlFor="ingredients">材料</Label>
-      <Textarea
-        id="ingredients"
-        disabled={isLoading}
-        {...register("ingredients", { required: "This field is required" })}
-        placeholder="材料"
-      />
-      {errors?.ingredients?.message && (
-        <FormError>{errors?.ingredients?.message}</FormError>
-      )}
-      <Label htmlFor="step1">STEP1</Label>
-      <Textarea
-        className="step"
-        id="step1"
-        disabled={isLoading}
-        {...register("step1", { required: "This field is required" })}
-        placeholder="手順1"
-      />
-      {errors?.step1?.message && (
-        <FormError>{errors?.step1?.message}</FormError>
-      )}
-      <Label htmlFor="step2">STEP2</Label>
-      <Textarea
-        className="step"
-        id="step2"
-        disabled={isLoading}
-        {...register("step2")}
-        placeholder="手順2"
-      />
-      {errors?.step2?.message && (
-        <FormError>{errors?.step2?.message}</FormError>
-      )}
-      <Label htmlFor="step3">STEP3</Label>
-      <Textarea
-        className="step"
-        id="step3"
-        disabled={isLoading}
-        {...register("step3")}
-        placeholder="手順3"
-      />
-      {errors?.step3?.message && (
-        <FormError>{errors?.step3?.message}</FormError>
-      )}
-      <Label htmlFor="file">アップロード</Label>
+      {errors.title?.message && <FormError>{errors.title.message}</FormError>}
+
+      <Label>材料</Label>
+
+      <IngredientSection>
+        {normalFields.map((field, index) => (
+          <div key={field.id}>
+            <IngredientFields
+              register={register}
+              index={index}
+              removenNormal={() => removenNormal(index)}
+            />
+          </div>
+        ))}
+        <Button
+          type="button"
+          size="form"
+          variation="tertiary"
+          onClick={() => appendNormal({ name: "", amount: "" })}
+          style={{ alignSelf: "flex-start", marginTop: "0.4rem" }}
+        >
+          材料を追加
+        </Button>
+
+        <Label>(だしグループ)</Label>
+
+        {groupFields.map((group, index) => (
+          <div key={group.id}>
+            <IngredientGroupFields
+              control={control}
+              register={register}
+              groupIndex={index}
+              appendGroup={() =>
+                appendGroup({
+                  group_name: "",
+                  items: [{ name: "", amount: "" }],
+                })
+              }
+              onRemoveGroup={() => removeGroup(index)}
+            />
+          </div>
+        ))}
+         <Button
+          type="button"
+          size="form"
+          variation="tertiary"
+          onClick={() => appendGroup({
+                  group_name: "",
+                  items: [{ name: "", amount: "" }],
+                })}
+          style={{ alignSelf: "flex-start", marginTop: "0.4rem" }}
+        >
+          グループを追加
+        </Button>
+        
+      </IngredientSection>
+
+      {stepFields.map((field, index) => (
+        <div key={field.id}>
+          <Label htmlFor={`steps.${index}.value`}>STEP {index + 1}</Label>
+          <Textarea
+            id={`steps.${index}.value`}
+            disabled={isLoading}
+            {...register(`steps.${index}.value`, {
+              required: "This field is required",
+            })}
+            placeholder={`手順${index + 1}`}
+          />
+          {errors.steps?.[index]?.value?.message && (
+            <FormError>{errors.steps[index].value.message}</FormError>
+          )}
+
+          {index >= 1 && (
+            <Button
+              type="button"
+              variation="tertiary"
+              onClick={() => removeStep(index)}
+            >
+              STEPを削除
+            </Button>
+          )}
+        </div>
+      ))}
+
+      <Button
+        type="button"
+        variation="tertiary"
+        onClick={() => appendStep({ value: "" })}
+      >
+        STEPを追加
+      </Button>
+      <Label htmlFor="image_file">画像</Label>
       <Input
-        id="file"
+        id="image_file"
         type="file"
         accept="image/*"
         {...register("image_file")}
         disabled={isLoading}
       />
+
       <Label htmlFor="category">カテゴリー</Label>
       <Input
         id="category"
@@ -94,13 +178,13 @@ export default function RecipeFormFields({
         {...register("category", { required: "This field is required" })}
         placeholder="カテゴリー"
       />
-      {errors?.category?.message && (
-        <FormError>{errors?.category?.message}</FormError>
+      {errors.category?.message && (
+        <FormError>{errors.category.message}</FormError>
       )}
-
       <Button type="submit" disabled={isLoading}>
         {isLoading ? "送信中" : submitLabel}
       </Button>
+
       {onCancel && (
         <Button type="button" onClick={onCancel} disabled={isLoading}>
           キャンセル
