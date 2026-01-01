@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { RecipeForm } from "../../types/recipe";
 import { updateRecipe } from "../../services/recipe";
+import toast from "react-hot-toast";
 
 export function useEditRecipe() {
     const queryClient = useQueryClient();
@@ -10,7 +11,7 @@ export function useEditRecipe() {
         onSuccess: (_data, valiables) => {
           queryClient.invalidateQueries({ queryKey: ["recipe", valiables.id] });
           queryClient.refetchQueries({ queryKey: ["recipe", valiables.id] });
-          window.alert("更新されました");
+          toast.success("更新されました");
           
         },
       });
