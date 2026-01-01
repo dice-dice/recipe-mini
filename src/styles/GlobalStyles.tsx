@@ -3,14 +3,22 @@ import { createGlobalStyle } from "styled-components";
 const GlobalStyles = createGlobalStyle`
 :root {
   /* Indigo */
-  --color-brand-50: #eef2ff;
+  /* --color-brand-50: #eef2ff;
   --color-brand-100: #e0e7ff;
   --color-brand-200: #c7d2fe;
   --color-brand-500: #6366f1;
   --color-brand-600: #4f46e5;
   --color-brand-700: #4338ca;
   --color-brand-800: #3730a3;
-  --color-brand-900: #312e81;
+  --color-brand-900: #312e81; */
+--color-brand-50:  #fdf8f3;  /* ほぼ白に近い薄いベージュ */
+--color-brand-100: #f3e8dc;  /* 明るいベージュ */
+--color-brand-200: #e7d3bc;  /* ソフトブラウン */
+--color-brand-500: #b08968;  /* メインブラウン */
+--color-brand-600: #9c7456;  /* 濃いめのブラウン */
+--color-brand-700: #7f5f46;  /* しっかりした茶 */
+--color-brand-800: #654a37;  /* ダークブラウン */
+--color-brand-900: #4e3829;
 
   /* Grey */
   --color-grey-0: #fff;
@@ -72,8 +80,8 @@ html {
 }
 
 body {
-  font-family: "Poppins", sans-serif;
-  color: var(--color-grey-700);
+  font-family: 'Noto Serif JP', serif;
+  color: var(--color-grey-600);
 
   transition: color 0.3s, background-color 0.3s;
   min-height: 100vh;
