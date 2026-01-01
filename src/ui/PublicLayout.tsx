@@ -4,6 +4,8 @@ import styled from "styled-components";
 
 const Header = styled.header`
   padding: 1.6rem 3.2rem;
+  background-color: var(--color-brand-900);
+  margin-bottom: 2.4rem;
 `;
 
 const Nav = styled.nav`
@@ -11,24 +13,24 @@ const Nav = styled.nav`
   flex-direction: row-reverse;
   gap: 2rem;
   a {
-    color: var(--color-grey-500);
+    color: var(--color-brand-100);
     font-weight: 500;
     text-decoration: none;
   }
 `;
 
 const StyledNavLink = styled(NavLink)`
-  color: var(--color-grey-500);
+  color: var(--color-grey-0);
   font-weight: 500;
   text-decoration: none;
 
   &.active {
-    color: var(--color-grey-900);
+    color: var(--color-grey-0);
     font-weight: 600;
   }
 
   &:hover {
-    color: var(--color-grey-700);
+    color: var(--color-grey-0);
   }
 `;
 
