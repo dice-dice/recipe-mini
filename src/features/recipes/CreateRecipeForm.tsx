@@ -5,12 +5,23 @@ import RecipeFormFields from "./RecipeFormFields";
 import { useCreateRecipe } from "./useCreateRecipe";
 
 export default function CreateRecipeForm() {
-  const methods = useForm<RecipeForm>();
+  const methods = useForm<RecipeForm>({
+    defaultValues: {
+      title: "",
+      ingredients: [
+        { name: "", amount: ""},
+      ],
+      ingredient_groups:[{group_name:"", items:[{ name: "", amount: ""}]}],
+      steps: [{ value: "" }],
+      image_url: "",
+      category: "",
+    },
+  });
 
-  const {addRecipe, isLoading} = useCreateRecipe();
+  const { addRecipe, isLoading } = useCreateRecipe();
   function onSubmit(data: RecipeForm) {
     addRecipe(data, {
-      onSuccess:() => methods.reset()
+      onSuccess: () => methods.reset(),
     });
   }
   return (
