@@ -18,6 +18,11 @@ const sizes = {
     padding: 1.2rem 2.4rem;
     font-weight: 500;
   `,
+    form: css`
+    font-size: 1.4rem;
+    padding: 0.8rem 1.2rem;  // Input と同じ
+    line-height: 1.5;
+  `,
 };
 
 const variations = {
@@ -38,6 +43,15 @@ const variations = {
       background-color: var(--color-grey-50);
     }
   `,
+    tertiary: css`
+    color: var(--color-grey-600);
+    background: var(--color-grey-300);
+    border: 1px solid var(--color-grey-200);
+
+    &:hover {
+      background-color: var(--color-grey-50);
+    }
+  `,
   danger: css`
     color: var(--color-red-100);
     background-color: var(--color-red-700);
@@ -48,7 +62,6 @@ const variations = {
   `,
 };
 
-
 type Size = keyof typeof sizes;
 type Variation = keyof typeof variations;
 
@@ -57,15 +70,12 @@ interface ButtonProps {
   variation?: Variation;
 }
 
-
 const Button = styled.button<ButtonProps>`
   border: none;
   border-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-sm);
 
-${({ size = "medium" }) => sizes[size]}
+  ${({ size = "medium" }) => sizes[size]}
   ${({ variation = "primary" }) => variations[variation]}
-`
-;
-
+`;
 export default Button;
