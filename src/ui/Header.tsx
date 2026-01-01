@@ -19,7 +19,7 @@ export default function Header({
 }) {
   return (
     <StyledHeader>
-      <Button onClick={toggleTheme}>
+      <Button onClick={toggleTheme} variation="secondary">
         {theme === "light" ? "🌙 Dark" : "☀️ Light"}
       </Button>
     </StyledHeader>
