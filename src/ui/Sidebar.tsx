@@ -4,7 +4,7 @@ import Logout from "../pages/Logout";
 
 const StyleSidebar = styled.aside`
   background-color: var(--color-grey-0);
-  padding: 3.2rem 2.4rem;
+  padding: 2.4rem 1.6rem;
   border-right: 1px solid var(--color-grey-100);
 
   grid-row: 1 / -1;
@@ -14,15 +14,20 @@ const StyleSidebar = styled.aside`
 `;
 
 const StyledNavLink = styled(NavLink)`
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+
   color: var(--color-grey-700);
   text-decoration: none;
-  padding: 1rem;
-  border-radius: 5px;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  font-size: 1.4rem;
 
   &.active {
     background-color: var(--color-brand-100);
-    color: var(--color-brand-800);
-    font-weight: bold;
+    color: var(--color-brand-700);
+    font-weight: 600;
   }
 
   &:hover {
