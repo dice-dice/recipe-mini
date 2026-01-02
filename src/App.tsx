@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
@@ -10,9 +10,8 @@ import RecipeDetail from "./pages/RecipeDetail";
 import Overview from "./pages/Overview";
 import HomePage from "./pages/HomePage";
 import Login from "./pages/Login";
-import PageNotFound from "./pages/PageNotFound";
+
 import AddRecipe from "./pages/AddRecipe";
-import Settings from "./pages/Settings";
 
 import ProtectedRoute from "./utils/ProtectedRoute";
 import Profile from "./features/authentication/Profile";
@@ -26,40 +25,40 @@ const queryClient = new QueryClient({
     },
   },
 });
+export const router = createBrowserRouter([
+  {
+    element: <PublicLayout />,
+    children: [
+      { index: true, element: <HomePage />, handle: { title: "Home" } },
+      { path: "registration", element: <Registration />, handle: { title: "Registration" } },
+      { path: "login", element: <Login />, handle: { title: "Login" } },
+      { path: "overview", element: <Overview />, handle: { title: "Overview" } },
+    ],
+  },
+  {
+    path: "app",
+    element: (
+      <ProtectedRoute>
+        <AppLayout />
+      </ProtectedRoute>
+    ),
+    children: [
+      { index: true, element: <Navigate to="recipes" replace /> },
+      { path: "recipes", element: <Recipes />, handle: { title: "Recipes" } },
+      { path: "recipes/:id", element: <RecipeDetail />, handle: { title: "Recipe詳細" } },
+      { path: "add", element: <AddRecipe />, handle: { title: "Recipe追加" } },
+      { path: "profile", element: <Profile />, handle: { title: "Prifile確認" } },
+      { path: "password", element: <PasswordSet />, handle: { title: "Password変更" } },
+    ],
+  },
+]);
 export default function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
         <GlobalStyles />
-        <BrowserRouter>
-          <Routes>
-            <Route element={<PublicLayout />}>
-              <Route index element={<HomePage />} />
-              <Route path="registration" element={<Registration />} />
-              <Route path="login" element={<Login />} />
-              <Route path="overview" element={<Overview />} />
-            </Route>
-
-            <Route
-              path="app"
-              element={
-                <ProtectedRoute>
-                  <AppLayout />
-                </ProtectedRoute>
-              }
-            >
-              <Route index element={<Navigate to="recipes" replace />} />
-              <Route path="recipes" element={<Recipes />} />
-              <Route path="recipes/:id" element={<RecipeDetail />} />
-              <Route path="add" element={<AddRecipe />} />
-              <Route path="profile" element={<Profile />} />
-              <Route path="password" element={<PasswordSet />} />
-            </Route>
-            <Route path="settings" element={<Settings />} />
-            <Route path="*" element={<PageNotFound />} />
-          </Routes>
-        </BrowserRouter>
+        <RouterProvider router={router} />
       </QueryClientProvider>
     </>
   );
