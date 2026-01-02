@@ -36,6 +36,7 @@ export default function IngredientFields({
           削除
         </Button>
       )}
+      
     </div>
   );
 }
