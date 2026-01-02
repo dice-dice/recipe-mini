@@ -1,10 +1,9 @@
-
-import { Outlet } from 'react-router';
-import styled from 'styled-components';
-import Header from './Header';
-import Sidebar from './Sidebar';
-import { useEffect, useState } from 'react';
-import { Toaster } from 'react-hot-toast';
+import { Outlet, useMatches } from "react-router";
+import styled from "styled-components";
+import Header from "./Header";
+import Sidebar from "./Sidebar";
+import { useEffect, useState } from "react";
+import { Toaster } from "react-hot-toast";
 
 const StyledAppLayout = styled.div`
   display: grid;
@@ -27,14 +26,15 @@ const Container = styled.div`
   gap: 3.2rem;
 `;
 export default function AppLayout() {
-  const [theme, setTheme] = useState(
-    localStorage.getItem("theme") || "light"
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+
+  useEffect(
+    function () {
+      const root = document.documentElement;
+      root.classList.toggle("dark-mode", theme === "dark");
+    },
+    [theme]
   );
-  
-  useEffect(function() {
-const root = document.documentElement;
-    root.classList.toggle("dark-mode", theme === "dark");
-  },[theme]);
 
   function toggleTheme() {
     setTheme((priv) => {
@@ -43,17 +43,36 @@ const root = document.documentElement;
       return newTheme;
     });
   }
+
+  type RouteHandle = {
+  title?: string;
+};
+  const matches = useMatches();
+
+const headerTitle = (() => {
+  const match = matches
+    .slice()
+    .reverse()
+    .find(m => (m.handle as RouteHandle)?.title);
+
+  const handle = match?.handle as RouteHandle | undefined;
+  return handle?.title ?? "";
+})();
+
   return (
     <StyledAppLayout>
-      <Toaster position='top-center'
-      toastOptions={{duration: 3000}}/>
-      <Header theme={theme} toggleTheme ={toggleTheme}/>
-      <Sidebar/>
+      <Toaster position="top-center" toastOptions={{ duration: 3000 }} />
+      <Header
+        theme={theme}
+        toggleTheme={toggleTheme}
+        headerTitle={headerTitle}
+      />
+      <Sidebar />
       <Main>
         <Container>
           <Outlet />
         </Container>
       </Main>
     </StyledAppLayout>
-  )
+  );
 }
