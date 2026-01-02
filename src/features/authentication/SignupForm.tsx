@@ -2,7 +2,11 @@ import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { signup as signupApi } from "../../services/auth";
 
-import { SignupFormValues } from "../../types/authType"; 
+import { SignupFormValues } from "../../types/authType";
+import { Form } from "../../ui/Form";
+import Input from "../../ui/Input";
+import Button from "../../ui/Button";
+import Heading from "../../ui/Heading";
 
 export default function SignupForm() {
   const {
@@ -35,22 +39,26 @@ export default function SignupForm() {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input
+      <Heading as="h2">新規登録</Heading>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Input
+          placeholder="氏名"
           type="text"
           disabled={isLoading}
           {...register("fullName", { required: "This field is required" })}
         />
         {errors?.fullName?.message}
-        <input
+        <Input
+          placeholder="メールアドレス"
           type="email"
-           disabled={isLoading}
+          disabled={isLoading}
           {...register("email", { required: "This field is required" })}
         />
         {errors?.email?.message}
-        <input
+        <Input
+          placeholder="パスワード"
           type="password"
-           disabled={isLoading}
+          disabled={isLoading}
           {...register("password", {
             required: "This field is required",
             minLength: {
@@ -61,9 +69,10 @@ export default function SignupForm() {
         />
         {errors?.password?.message}
 
-        <input
+        <Input
+          placeholder="パスワード再確認"
           type="password"
-           disabled={isLoading}
+          disabled={isLoading}
           {...register("passwordConfirm", {
             required: "This field is required",
             // validate: (value) => value === getValues().password || "Passwords need to match",
@@ -75,8 +84,8 @@ export default function SignupForm() {
           })}
         />
         {errors?.passwordConfirm?.message}
-        <button type="submit">ユーザ登録</button>
-      </form>
+        <Button type="submit">ユーザ登録</Button>
+      </Form>
     </>
   );
 }
