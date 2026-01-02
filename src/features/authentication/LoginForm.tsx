@@ -3,6 +3,10 @@ import { LoginFormValues } from "../../types/authType";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { login as loginApi } from "../../services/auth";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Form } from "../../ui/Form";
+import Input from "../../ui/Input";
+import Button from "../../ui/Button";
+import Heading from "../../ui/Heading";
 
 export default function LoginForm({buttonName}:{buttonName:string}) {
   const navigate = useNavigate();
@@ -33,20 +37,23 @@ export default function LoginForm({buttonName}:{buttonName:string}) {
     reset({ email: "",password: ""});
   }
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input
+    <>
+    <Heading as="h2">ログイン</Heading>
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <Input
         type="email"
         disabled={isLoading}
         {...register("email", { required: "This field is required" })}
       />
       {errors?.email?.message}
-      <input
+      <Input
         type="password"
         disabled={isLoading}
         {...register("password", { required: "This field is required" })}
       />
       {errors?.password?.message}
-      <button type="submit">{buttonName}</button>
-    </form>
+      <Button type="submit">{buttonName}</Button>
+    </Form>
+    </>
   );
 }
