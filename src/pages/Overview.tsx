@@ -10,7 +10,7 @@ const HeroVisual = styled.section`
     gap: 1.6rem;
   `;
   const AppScreenshot = styled.img`
-    width: 100%;
+    width: 50%;
     border-radius: var(--border-radius-md);
     border: 1px solid var(--color-grey-200);
     box-shadow: var(--shadow-sm);
@@ -38,6 +38,10 @@ export default function Overview() {
       <AppScreenshot
         src="/src/images/recipe-mini-dashboard.png"
         alt="Recipe Mini のレシピ一覧画面"
+      />
+      <AppScreenshot
+        src="/src/images/recipe-mini-dashboard2.png"
+        alt="Recipe Mini のレシピ追加画面"
       />
     </HeroVisual>
   );
