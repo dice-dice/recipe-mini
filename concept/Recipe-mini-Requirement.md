@@ -32,3 +32,11 @@
 - レスポンシブ対応
 - フォームは幅100%
 
+## choose library
+- react-hook-form@7.69
+- react-router-dom@6.30.1(data router)
+- styled-components
+- hot-Toaster
+
+## what create project
+- vite@4
