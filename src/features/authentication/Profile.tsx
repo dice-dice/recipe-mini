@@ -4,7 +4,7 @@ export default function Profile() {
     
   return (
     <>
-     再設定profile
+     <p>再ログインしてください</p>
       <LoginForm buttonName="再ログイン"/>
     </>
   )
