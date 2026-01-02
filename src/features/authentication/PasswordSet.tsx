@@ -2,6 +2,9 @@ import { useMutation } from "@tanstack/react-query";
 import { resetPassword as resetPasswordApi } from "../../services/auth";
 import { useForm } from "react-hook-form";
 import { ResetPasswordFormValues } from "../../types/authType";
+import { Form } from "../../ui/Form";
+import Input from "../../ui/Input";
+import Button from "../../ui/Button";
 
 export default function PasswordSet() {
   const {
@@ -14,7 +17,6 @@ export default function PasswordSet() {
   const { mutate: resetPassword, isLoading } = useMutation({
     mutationFn: resetPasswordApi,
     onSuccess: () => {
-      console.log("password reset success!");
       reset();
     },
   });
@@ -25,10 +27,11 @@ export default function PasswordSet() {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Input
           type="password"
           disabled={isLoading}
+          placeholder="新しいパスワード"
           {...register("new_password", {
             required: "This field is required",
             minLength: {
@@ -39,9 +42,10 @@ export default function PasswordSet() {
         />
         {errors?.new_password?.message}
 
-        <input
+        <Input
           type="password"
           disabled={isLoading}
+          placeholder="新しいパスワードの再入力"
           {...register("new_passwordConfirm", {
             required: "This field is required",
             validate: (value) => {
@@ -52,8 +56,8 @@ export default function PasswordSet() {
           })}
         />
         {errors?.new_passwordConfirm?.message}
-        <button type="submit">再設定</button>
-      </form>
+        <Button type="submit">再設定</Button>
+      </Form>
     </>
   );
 }
