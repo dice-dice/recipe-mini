@@ -56,6 +56,7 @@ export default function RecipeFormFields({
     fields: stepFields,
     append: appendStep,
     remove: removeStep,
+    move: moveStep,
   } = useFieldArray({
     control,
     name: "steps",
@@ -113,19 +114,20 @@ export default function RecipeFormFields({
             />
           </div>
         ))}
-         <Button
+        <Button
           type="button"
           size="form"
           variation="tertiary"
-          onClick={() => appendGroup({
-                  group_name: "",
-                  items: [{ name: "", amount: "" }],
-                })}
+          onClick={() =>
+            appendGroup({
+              group_name: "",
+              items: [{ name: "", amount: "" }],
+            })
+          }
           style={{ alignSelf: "flex-start", marginTop: "0.4rem" }}
         >
           グループを追加
         </Button>
-        
       </IngredientSection>
 
       {stepFields.map((field, index) => (
@@ -152,6 +154,29 @@ export default function RecipeFormFields({
               STEPを削除
             </Button>
           )}
+          {index > 0 &&
+            <Button
+              type="button"
+              variation="secondary"
+              size="small"
+              disabled={index === 0}
+              onClick={() => moveStep(index, index - 1)}
+            >
+              ↑
+            </Button>
+          }
+
+          {index < stepFields.length - 1 &&
+            <Button
+              type="button"
+              variation="secondary"
+              size="small"
+              disabled={index === stepFields.length - 1}
+              onClick={() => moveStep(index, index + 1)}
+            >
+              ↓
+            </Button>
+          }
         </div>
       ))}
 
