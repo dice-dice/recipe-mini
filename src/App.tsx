@@ -47,7 +47,7 @@ export const router = createBrowserRouter([
       { path: "recipes", element: <Recipes />, handle: { title: "Recipes" } },
       { path: "recipes/:id", element: <RecipeDetail />, handle: { title: "Recipe詳細" } },
       { path: "add", element: <AddRecipe />, handle: { title: "Recipe追加" } },
-      { path: "profile", element: <Profile />, handle: { title: "Prifile確認" } },
+      { path: "profile", element: <Profile />, handle: { title: "Profile確認" } },
       { path: "password", element: <PasswordSet />, handle: { title: "Password変更" } },
     ],
   },
