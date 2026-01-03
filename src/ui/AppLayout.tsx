@@ -10,12 +10,21 @@ const StyledAppLayout = styled.div`
   grid-template-columns: 26rem 1fr;
   grid-template-rows: auto 1fr;
   height: 100vh;
+
+    /* tablet / mobile */
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const Main = styled.main`
   background-color: var(--color-grey-50);
   padding: 4rem 4.8rem 6.4rem;
-  overflow: scroll;
+  overflow: auto;
+
+    @media (max-width: 1024px) {
+    padding: 2.4rem 1.6rem;
+  }
 `;
 
 const Container = styled.div`
@@ -27,7 +36,7 @@ const Container = styled.div`
 `;
 export default function AppLayout() {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
-
+   const [sidebarOpen, setSidebarOpen] = useState(false);
   useEffect(
     function () {
       const root = document.documentElement;
@@ -66,8 +75,9 @@ const headerTitle = (() => {
         theme={theme}
         toggleTheme={toggleTheme}
         headerTitle={headerTitle}
+        onMenuClick={() => setSidebarOpen(v => !v)}
       />
-      <Sidebar />
+      <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)}/>
       <Main>
         <Container>
           <Outlet />
