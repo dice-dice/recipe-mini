@@ -36,11 +36,11 @@ export default function Overview() {
         管理画面スタイルの UI を採用しています。
       </VisualText>
       <AppScreenshot
-        src="/src/images/recipe-mini-dashboard.png"
+        src="/recipe-mini-dashboard.png"
         alt="Recipe Mini のレシピ一覧画面"
       />
       <AppScreenshot
-        src="/src/images/recipe-mini-dashboard2.png"
+        src="/recipe-mini-dashboard2.png"
         alt="Recipe Mini のレシピ追加画面"
       />
     </HeroVisual>

@@ -4,6 +4,7 @@ import { loginSchema, LoginFormValues } from "../../schemas/authSchema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { login as loginApi } from "../../services/auth";
 import { useLocation, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { Form } from "../../ui/Form";
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";
@@ -18,13 +19,14 @@ export default function LoginForm({ buttonName }: { buttonName: string }) {
     mutationFn: loginApi,
     onSuccess: (data) => {
       queryClient.setQueryData(["user"], data.session?.user);
+      toast.success("ログインしました");
       if (location.pathname === "/login")
         navigate("/app/recipes", { replace: true });
       if (location.pathname === "/app/profile")
         navigate("/app/password", { replace: true });
     },
-    onError: (err) => {
-      console.log("Error", err);
+    onError: (err: Error) => {
+      toast.error(err.message || "ログインに失敗しました");
     },
   });
 

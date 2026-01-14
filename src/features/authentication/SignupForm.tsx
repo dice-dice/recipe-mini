@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import toast from "react-hot-toast";
 import { signup as signupApi } from "../../services/auth";
 import { signupSchema, SignupFormValues } from "../../schemas/authSchema";
 
@@ -22,8 +23,11 @@ export default function SignupForm() {
   const { mutate: signup, isPending } = useMutation({
     mutationFn: signupApi,
     onSuccess: () => {
-      console.log("signup success!");
+      toast.success("登録しました");
       reset();
+    },
+    onError: (err: Error) => {
+      toast.error(err.message || "登録に失敗しました");
     },
   });
 

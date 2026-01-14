@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { resetPassword as resetPasswordApi } from "../../services/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import toast from "react-hot-toast";
 import {
   resetPasswordSchema,
   ResetPasswordFormValues,
@@ -23,7 +24,11 @@ export default function PasswordSet() {
   const { mutate: resetPassword, isPending } = useMutation({
     mutationFn: resetPasswordApi,
     onSuccess: () => {
+      toast.success("パスワードを変更しました");
       reset();
+    },
+    onError: (err: Error) => {
+      toast.error(err.message || "パスワード変更に失敗しました");
     },
   });
 
