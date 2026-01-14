@@ -1,8 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { signup as signupApi } from "../../services/auth";
+import { signupSchema, SignupFormValues } from "../../schemas/authSchema";
 
-import { SignupFormValues } from "../../types/authType";
 import { Form } from "../../ui/Form";
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";
@@ -12,12 +13,13 @@ export default function SignupForm() {
   const {
     register,
     formState: { errors },
-    getValues,
     handleSubmit,
     reset,
-  } = useForm<SignupFormValues>();
+  } = useForm<SignupFormValues>({
+    resolver: zodResolver(signupSchema),
+  });
 
-  const { mutate: signup, isLoading } = useMutation({
+  const { mutate: signup, isPending } = useMutation({
     mutationFn: signupApi,
     onSuccess: () => {
       console.log("signup success!");
@@ -44,46 +46,34 @@ export default function SignupForm() {
         <Input
           placeholder="氏名"
           type="text"
-          disabled={isLoading}
-          {...register("fullName", { required: "This field is required" })}
+          disabled={isPending}
+          {...register("fullName")}
         />
-        {errors?.fullName?.message}
+        {errors?.fullName?.message && <span>{errors.fullName.message}</span>}
         <Input
           placeholder="メールアドレス"
-          type="email"
-          disabled={isLoading}
-          {...register("email", { required: "This field is required" })}
+          type="text"
+          disabled={isPending}
+          {...register("email")}
         />
-        {errors?.email?.message}
+        {errors?.email?.message && <span>{errors.email.message}</span>}
         <Input
           placeholder="パスワード"
           type="password"
-          disabled={isLoading}
-          {...register("password", {
-            required: "This field is required",
-            minLength: {
-              value: 8,
-              message: "Password needs a minimum of 8 characters",
-            },
-          })}
+          disabled={isPending}
+          {...register("password")}
         />
-        {errors?.password?.message}
+        {errors?.password?.message && <span>{errors.password.message}</span>}
 
         <Input
           placeholder="パスワード再確認"
           type="password"
-          disabled={isLoading}
-          {...register("passwordConfirm", {
-            required: "This field is required",
-            // validate: (value) => value === getValues().password || "Passwords need to match",
-            validate: (value) => {
-              const password = getValues("password");
-              if (!password) return true;
-              return value === password || "Passwords need to match";
-            },
-          })}
+          disabled={isPending}
+          {...register("passwordConfirm")}
         />
-        {errors?.passwordConfirm?.message}
+        {errors?.passwordConfirm?.message && (
+          <span>{errors.passwordConfirm.message}</span>
+        )}
         <Button type="submit">ユーザ登録</Button>
       </Form>
     </>

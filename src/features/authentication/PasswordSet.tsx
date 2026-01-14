@@ -1,7 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 import { resetPassword as resetPasswordApi } from "../../services/auth";
 import { useForm } from "react-hook-form";
-import { ResetPasswordFormValues } from "../../types/authType";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  resetPasswordSchema,
+  ResetPasswordFormValues,
+} from "../../schemas/authSchema";
 import { Form } from "../../ui/Form";
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";
@@ -10,11 +14,13 @@ export default function PasswordSet() {
   const {
     register,
     formState: { errors },
-    getValues,
     handleSubmit,
     reset,
-  } = useForm<ResetPasswordFormValues>();
-  const { mutate: resetPassword, isLoading } = useMutation({
+  } = useForm<ResetPasswordFormValues>({
+    resolver: zodResolver(resetPasswordSchema),
+  });
+
+  const { mutate: resetPassword, isPending } = useMutation({
     mutationFn: resetPasswordApi,
     onSuccess: () => {
       reset();
@@ -30,32 +36,23 @@ export default function PasswordSet() {
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Input
           type="password"
-          disabled={isLoading}
+          disabled={isPending}
           placeholder="新しいパスワード"
-          {...register("new_password", {
-            required: "This field is required",
-            minLength: {
-              value: 8,
-              message: "Password needs a minimum of 8 characters",
-            },
-          })}
+          {...register("new_password")}
         />
-        {errors?.new_password?.message}
+        {errors?.new_password?.message && (
+          <span>{errors.new_password.message}</span>
+        )}
 
         <Input
           type="password"
-          disabled={isLoading}
+          disabled={isPending}
           placeholder="新しいパスワードの再入力"
-          {...register("new_passwordConfirm", {
-            required: "This field is required",
-            validate: (value) => {
-              const password = getValues("new_password");
-              if (!password) return true;
-              return value === password || "Passwords need to match";
-            },
-          })}
+          {...register("new_passwordConfirm")}
         />
-        {errors?.new_passwordConfirm?.message}
+        {errors?.new_passwordConfirm?.message && (
+          <span>{errors.new_passwordConfirm.message}</span>
+        )}
         <Button type="submit">再設定</Button>
       </Form>
     </>

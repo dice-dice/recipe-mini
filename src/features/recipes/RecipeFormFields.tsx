@@ -69,7 +69,7 @@ export default function RecipeFormFields({
       <Input
         id="title"
         disabled={isLoading}
-        {...register("title", { required: "This field is required" })}
+        {...register("title")}
         placeholder="タイトル"
       />
       {errors.title?.message && <FormError>{errors.title.message}</FormError>}
@@ -136,9 +136,7 @@ export default function RecipeFormFields({
           <Textarea
             id={`steps.${index}.value`}
             disabled={isLoading}
-            {...register(`steps.${index}.value`, {
-              required: "This field is required",
-            })}
+            {...register(`steps.${index}.value`)}
             placeholder={`手順${index + 1}`}
           />
           {errors.steps?.[index]?.value?.message && (
@@ -154,7 +152,7 @@ export default function RecipeFormFields({
               STEPを削除
             </Button>
           )}
-          {index > 0 &&
+          {index > 0 && (
             <Button
               type="button"
               variation="secondary"
@@ -164,9 +162,9 @@ export default function RecipeFormFields({
             >
               ↑
             </Button>
-          }
+          )}
 
-          {index < stepFields.length - 1 &&
+          {index < stepFields.length - 1 && (
             <Button
               type="button"
               variation="secondary"
@@ -176,7 +174,7 @@ export default function RecipeFormFields({
             >
               ↓
             </Button>
-          }
+          )}
         </div>
       ))}
 
@@ -200,7 +198,7 @@ export default function RecipeFormFields({
       <Input
         id="category"
         disabled={isLoading}
-        {...register("category", { required: "This field is required" })}
+        {...register("category")}
         placeholder="カテゴリー"
       />
       {errors.category?.message && (
