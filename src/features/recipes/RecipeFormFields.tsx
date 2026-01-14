@@ -189,10 +189,13 @@ export default function RecipeFormFields({
       <Input
         id="image_file"
         type="file"
-        accept="image/*"
+        accept="image/jpeg,image/png,image/webp"
         {...register("image_file")}
         disabled={isLoading}
       />
+      {errors.image_file?.message && (
+        <FormError>{errors.image_file.message as string}</FormError>
+      )}
 
       <Label htmlFor="category">カテゴリー</Label>
       <Input
