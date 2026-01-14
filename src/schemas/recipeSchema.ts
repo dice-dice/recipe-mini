@@ -46,7 +46,7 @@ export const recipeSchema = z.object({
     .min(1, "レシピ名は必須です")
     .max(100, "レシピ名は100文字以内で入力してください"),
   ingredients: z.array(ingredientSchema),
-  ingredient_groups: z.array(ingredientGroupSchema),
+  ingredient_groups: z.array(ingredientGroupSchema).optional(),
   steps: z.array(stepSchema),
   image_url: z.string().optional(),
   image_file: imageFileSchema,
