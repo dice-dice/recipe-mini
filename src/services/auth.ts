@@ -21,8 +21,7 @@ export async function signup({
   });
 
   if (error) throw error;
-  console.log(data);
-  //   return data;
+  return data;
 }
 
 // ログイン

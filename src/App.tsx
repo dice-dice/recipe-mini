@@ -61,6 +61,9 @@ export default function App() {
         <GlobalStyles />
         <Toaster
           position="top-center"
+          containerStyle={{
+            zIndex: 9999,
+          }}
           toastOptions={{
             duration: 3000,
             style: {
