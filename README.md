@@ -1,6 +1,6 @@
 # Recipe Mini
 
-url:https://www.food-manager.jp/
+url:https://recipe-mini-eikg.vercel.app/
 
 レシピ管理アプリケーション。お気に入りのレシピを登録・管理できます。
 
