@@ -1,5 +1,7 @@
 # Recipe Mini
 
+url:https://www.food-manager.jp/
+
 レシピ管理アプリケーション。お気に入りのレシピを登録・管理できます。
 
 ## Features
