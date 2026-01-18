@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import { useEffect, useState } from "react";
-import { Toaster } from "react-hot-toast";
 
 const StyledAppLayout = styled.div`
   display: grid;
@@ -70,7 +69,6 @@ const headerTitle = (() => {
 
   return (
     <StyledAppLayout>
-      <Toaster position="top-center" toastOptions={{ duration: 3000 }} />
       <Header
         theme={theme}
         toggleTheme={toggleTheme}

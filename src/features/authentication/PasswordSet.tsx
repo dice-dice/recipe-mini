@@ -7,6 +7,7 @@ import {
   resetPasswordSchema,
   ResetPasswordFormValues,
 } from "../../schemas/authSchema";
+import { translateError } from "../../utils/errorMessages";
 import { Form } from "../../ui/Form";
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";
@@ -28,7 +29,7 @@ export default function PasswordSet() {
       reset();
     },
     onError: (err: Error) => {
-      toast.error(err.message || "パスワード変更に失敗しました");
+      toast.error(translateError(err.message) || "パスワード変更に失敗しました");
     },
   });
 

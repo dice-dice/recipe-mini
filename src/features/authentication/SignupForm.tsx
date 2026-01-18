@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { signup as signupApi } from "../../services/auth";
 import { signupSchema, SignupFormValues } from "../../schemas/authSchema";
+import { translateError } from "../../utils/errorMessages";
 
 import { Form } from "../../ui/Form";
 import Input from "../../ui/Input";
@@ -27,7 +28,7 @@ export default function SignupForm() {
       reset();
     },
     onError: (err: Error) => {
-      toast.error(err.message || "登録に失敗しました");
+      toast.error(translateError(err.message) || "登録に失敗しました");
     },
   });
 

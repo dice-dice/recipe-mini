@@ -9,6 +9,7 @@ import { Form } from "../../ui/Form";
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";
 import Heading from "../../ui/Heading";
+import { translateError } from "../../utils/errorMessages";
 
 export default function LoginForm({ buttonName }: { buttonName: string }) {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ export default function LoginForm({ buttonName }: { buttonName: string }) {
         navigate("/app/password", { replace: true });
     },
     onError: (err: Error) => {
-      toast.error(err.message || "ログインに失敗しました");
+      toast.error(translateError(err.message) || "ログインに失敗しました");
     },
   });
 

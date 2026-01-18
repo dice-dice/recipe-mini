@@ -63,9 +63,9 @@ export default function App() {
           position="top-center"
           containerStyle={{
             zIndex: 9999,
-            top: 20,
-            left: 0,
-            right: 0,
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
           }}
           toastOptions={{
             duration: 3000,
@@ -74,7 +74,6 @@ export default function App() {
               color: "#fff",
               maxWidth: "90vw",
               width: "fit-content",
-              margin: "0 auto",
               padding: "12px 20px",
               fontSize: "14px",
               textAlign: "center",
