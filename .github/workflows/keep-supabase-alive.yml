@@ -2,7 +2,7 @@ name: Keep Supabase Alive
 
 on:
   schedule:
-    - cron: '0 3 * * 1,4'
+    - cron: '0 3 * * *'
   workflow_dispatch:
 
 jobs:
@@ -15,7 +15,7 @@ jobs:
             "${SUPABASE_URL}/rest/v1/recipes?select=id&limit=1" \
             -H "apikey: ${SUPABASE_ANON_KEY}")
           echo "Supabase responded with HTTP $status"
-          if [ "$status" -ge 400 ]; then
+          if [ "$status" -lt 200 ] || [ "$status" -ge 400 ]; then
             echo "::error::Unexpected response from Supabase (HTTP $status)"
             exit 1
           fi
